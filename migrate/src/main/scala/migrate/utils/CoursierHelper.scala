@@ -1,8 +1,10 @@
 package migrate.utils
 
 import scala.concurrent.ExecutionContext
-import coursier.maven.MavenRepository
-import migrate.internal.{InitialLib, Repository}
+
+import coursier.MavenRepository
+import migrate.internal.InitialLib
+import migrate.internal.Repository
 
 object CoursierHelper {
 

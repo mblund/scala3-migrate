@@ -1,15 +1,15 @@
 package migrate
 
+import coursier.Repositories
+
 import scala.Console._
-import migrate.internal.{
-  CrossCompatibleLibrary,
-  CrossVersion,
-  IncompatibleLibrary,
-  InitialLib,
-  Repository,
-  UpdatedVersion,
-  ValidLibrary
-}
+import migrate.internal.CrossCompatibleLibrary
+import migrate.internal.CrossVersion
+import migrate.internal.IncompatibleLibrary
+import migrate.internal.InitialLib
+import migrate.internal.Repository
+import migrate.internal.UpdatedVersion
+import migrate.internal.ValidLibrary
 import org.scalatest.funsuite.AnyFunSuiteLike
 
 class LibraryMigrationSuite extends AnyFunSuiteLike {
@@ -34,7 +34,7 @@ class LibraryMigrationSuite extends AnyFunSuiteLike {
   val domtypes: InitialLib    = InitialLib("com.raquo:domtypes:0.14.3", binaryJs)
   val domutils: InitialLib    = InitialLib("com.raquo:domtestutils:0.14.7", binaryJs)
 
-  val defaultRepositories: Seq[Repository] = Seq(Repository("https://repo1.maven.org/maven2"))
+  val defaultRepositories: Seq[Repository] = Seq(Repository(Repositories.central.root))
 
   test("Integrated compiler plugin: kind projector") {
     val migrated  = LibraryMigration.migrateLib(kindProjector, defaultRepositories)

@@ -1,14 +1,17 @@
 package migrate.interfaces
 
-import coursierapi.MavenRepository
-
 import java.nio.file.Path
 import java.{util => jutil}
+
 import scala.jdk.CollectionConverters._
+
 import migrate.LibraryMigration
 import migrate.Scala3Migrate
 import migrate.ScalacOptionsMigration
-import migrate.internal.{AbsolutePath, Classpath, InitialLib, Repository}
+import migrate.internal.AbsolutePath
+import migrate.internal.Classpath
+import migrate.internal.InitialLib
+import migrate.internal.Repository
 import migrate.utils.ScalaExtensions._
 import migrate.utils.ScalafixService
 

@@ -3,17 +3,15 @@ package migrate
 import migrate.buildinfo.BuildInfo
 import migrate.interfaces.MigratedLib
 import migrate.interfaces.MigratedLibs
-import migrate.internal.{
-  CrossCompatibleLibrary,
-  CrossVersion,
-  IncompatibleLibrary,
-  InitialLib,
-  IntegratedPlugin,
-  Repository,
-  UnclassifiedLibrary,
-  UpdatedVersion,
-  ValidLibrary
-}
+import migrate.internal.CrossCompatibleLibrary
+import migrate.internal.CrossVersion
+import migrate.internal.IncompatibleLibrary
+import migrate.internal.InitialLib
+import migrate.internal.IntegratedPlugin
+import migrate.internal.Repository
+import migrate.internal.UnclassifiedLibrary
+import migrate.internal.UpdatedVersion
+import migrate.internal.ValidLibrary
 import migrate.utils.CoursierHelper
 
 object LibraryMigration {
