@@ -4,6 +4,7 @@ import coursierapi.Dependency;
 import coursierapi.Fetch;
 import coursierapi.ResolutionParams;
 import coursierapi.ScalaVersion;
+import coursierapi.MavenRepository;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -28,7 +29,7 @@ public interface Migrate {
                  Path baseDirectory);
     
     MigratedScalacOptions migrateScalacOption(List<String> scala3CompilerOptions);
-    MigratedLibs migrateLibs(List<Lib> libs);
+    MigratedLibs migrateLibs(List<Lib> libs, List<MavenRepository> repositories);
 
     void migrateSyntax(List<Path> unmanagedSources,
                        Path targetRoot,

@@ -1,15 +1,16 @@
 package migrate
 
-import ScalaMigratePlugin.Keys._
-import Messages._
+import ScalaMigratePlugin.Keys.*
+import Messages.*
 import migrate.interfaces.{Lib, MigratedLib, MigratedLibs}
 import sbt.Keys
 import sbt.Def
 import sbt.MessageOnlyException
+import sbt.librarymanagement.{MavenRepository, Resolver}
 
-import scala.io.AnsiColor._
+import scala.io.AnsiColor.*
 import scala.util.{Failure, Success, Try}
-import scala.collection.JavaConverters._
+import scala.collection.JavaConverters.*
 
 private[migrate] object LibsMigration {
   val internalImpl = Def.task {
@@ -17,6 +18,7 @@ private[migrate] object LibsMigration {
     val projectId           = Keys.thisProject.value.id
     val scalaVersion        = Keys.scalaVersion.value
     val libraryDependencies = Keys.libraryDependencies.value
+    val resolvers           = Keys.resolvers.value
 
     if (!scalaVersion.startsWith("2.13.") && !scalaVersion.startsWith("3."))
       throw new MessageOnlyException(notScala213(scalaVersion, projectId))
@@ -24,7 +26,12 @@ private[migrate] object LibsMigration {
     log.info(startingMessage(projectId))
 
     val migrateAPI = ScalaMigratePlugin.getMigrateInstance(log)
-    val migrated   = migrateAPI.migrateLibs(libraryDependencies.map(LibImpl.apply).asJava)
+
+    // Convert sbt resolvers to coursier MavenRepositories
+    val mavenRepositories: Seq[coursierapi.MavenRepository] = resolvers.collect { case mvnRepo: sbt.librarymanagement.MavenRepository =>
+      coursierapi.MavenRepository.of(mvnRepo.root)
+    }
+    val migrated   = migrateAPI.migrateLibs(libraryDependencies.map(LibImpl.apply).asJava, mavenRepositories.asJava)
 
     val validLibs = migrated.getValidLibraries
     if (validLibs.nonEmpty) {
