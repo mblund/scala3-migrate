@@ -1,16 +1,16 @@
 package migrate
 
-import ScalaMigratePlugin.Keys.*
-import Messages.*
+import ScalaMigratePlugin.Keys._
+import Messages._
 import migrate.interfaces.{Lib, MigratedLib, MigratedLibs}
 import sbt.Keys
 import sbt.Def
 import sbt.MessageOnlyException
-import sbt.librarymanagement.{MavenRepository, Resolver}
+import sbt.librarymanagement.MavenRepository
 
-import scala.io.AnsiColor.*
+import scala.io.AnsiColor._
 import scala.util.{Failure, Success, Try}
-import scala.collection.JavaConverters.*
+import scala.collection.JavaConverters._
 
 private[migrate] object LibsMigration {
   val internalImpl = Def.task {
@@ -26,9 +26,7 @@ private[migrate] object LibsMigration {
     log.info(startingMessage(projectId))
 
     val migrateAPI = ScalaMigratePlugin.getMigrateInstance(log)
-
-    val mavenRepositories = resolvers.collect { case mvnRepo: sbt.librarymanagement.MavenRepository => mvnRepo.root }
-
+    val mavenRepositories = resolvers.collect { case mvnRepo: MavenRepository => mvnRepo.root }
     val migrated   = migrateAPI.migrateLibs(libraryDependencies.map(LibImpl.apply).asJava, mavenRepositories.asJava)
 
     val validLibs = migrated.getValidLibraries
