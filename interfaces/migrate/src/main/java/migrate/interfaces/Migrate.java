@@ -4,7 +4,6 @@ import coursierapi.Dependency;
 import coursierapi.Fetch;
 import coursierapi.ResolutionParams;
 import coursierapi.ScalaVersion;
-import coursierapi.MavenRepository;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
