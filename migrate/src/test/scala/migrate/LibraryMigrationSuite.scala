@@ -72,15 +72,16 @@ class LibraryMigrationSuite extends AnyFunSuiteLike {
     assert(version.head.toString == "2.6.1")
   }
 
-  test("not available in scala 3 with default repository") {
+  test("only available in an earlier version in maven central repository") {
     val migrated = LibraryMigration.migrateLib(akka, defaultRepositories)
     assert(migrated.isInstanceOf[UpdatedVersion])
-    val version = migrated.asInstanceOf[UpdatedVersion].versions
-    assert(version.contains("2.6.17") )
+    val versions = migrated.asInstanceOf[UpdatedVersion].versions
+    assert(versions.last == "2.9.0-M2", "The last version published to Maven Central was 2.9.0-M2")
   }
 
-  test("available in scala 3 in another repository ") {
-    val migrated = LibraryMigration.migrateLib(akka, defaultRepositories :+ Repository("https://repo.akka.io/maven"))
+  test("available in scala 3 in another repository") {
+    val repositories = defaultRepositories :+ Repository("https://repo.akka.io/maven")
+    val migrated     = LibraryMigration.migrateLib(akka, repositories)
     assert(migrated.isInstanceOf[ValidLibrary])
   }
 

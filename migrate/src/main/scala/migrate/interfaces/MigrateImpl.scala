@@ -56,9 +56,9 @@ final class MigrateImpl(logger: Logger) extends Migrate {
   override def migrateScalacOption(scalacOptions: jutil.List[String]): MigratedScalacOptions =
     ScalacOptionsMigration.migrate(scalacOptions.asScala.toSeq)
 
-  override def migrateLibs(libs: jutil.List[Lib], repositories: jutil.List[MavenRepository]): MigratedLibs = {
-    val initialLibs = libs.asScala.map(InitialLib.apply).toSeq
-    val initialRepos = repositories.asScala.map(x=> Repository(x.getBase)).toSeq
+  override def migrateLibs(libs: jutil.List[Lib], repositories: jutil.List[String]): MigratedLibs = {
+    val initialLibs  = libs.asScala.map(InitialLib.apply).toSeq
+    val initialRepos = repositories.asScala.map(Repository).toSeq
     LibraryMigration.migrateLibs(initialLibs, initialRepos)
   }
 

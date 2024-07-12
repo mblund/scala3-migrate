@@ -27,10 +27,8 @@ private[migrate] object LibsMigration {
 
     val migrateAPI = ScalaMigratePlugin.getMigrateInstance(log)
 
-    // Convert sbt resolvers to coursier MavenRepositories
-    val mavenRepositories: Seq[coursierapi.MavenRepository] = resolvers.collect { case mvnRepo: sbt.librarymanagement.MavenRepository =>
-      coursierapi.MavenRepository.of(mvnRepo.root)
-    }
+    val mavenRepositories = resolvers.collect { case mvnRepo: sbt.librarymanagement.MavenRepository => mvnRepo.root }
+
     val migrated   = migrateAPI.migrateLibs(libraryDependencies.map(LibImpl.apply).asJava, mavenRepositories.asJava)
 
     val validLibs = migrated.getValidLibraries
